@@ -1,23 +1,25 @@
 export const defaultTheme = {
-  white: '#FFFFFF',
-  background: '#FAFAFA',
+  colors: {
+    white: '#FFFFFF',
+    background: '#FAFAFA',
 
-  'base-title': '#272221',
-  'base-subtitle': '#403937',
-  'base-text': '#574F4D',
-  'base-card': '#F3F2F2',
-  'base-input': '#EDEDED',
-  'base-button': '#E6E5E5',
-  'base-label': '#8D8686',
-  'base-hover': '#D7D5D5',
+    'base-title': '#272221',
+    'base-subtitle': '#403937',
+    'base-text': '#574F4D',
+    'base-card': '#F3F2F2',
+    'base-input': '#EDEDED',
+    'base-button': '#E6E5E5',
+    'base-label': '#8D8686',
+    'base-hover': '#D7D5D5',
 
-  yellow: '#DBAC2C',
-  'yellow-light': '#F1E9C9',
-  'yellow-dark': '#C47F17',
+    yellow: '#DBAC2C',
+    'yellow-light': '#F1E9C9',
+    'yellow-dark': '#C47F17',
 
-  purple: '#4B2995',
-  'purple-light': '#EBE5F9',
-  'purple-dark': '#4B2995',
+    purple: '#4B2995',
+    'purple-light': '#EBE5F9',
+    'purple-dark': '#4B2995',
+  },
 
   fontStyles: {
     'title-xl': {
@@ -48,12 +50,12 @@ export const defaultTheme = {
     'text-l': {
       'font-size': '20px',
       'line-height': '130%',
-      'font-weight': '400/700',
+      'font-weight': '400',
     },
     'text-m': {
       'font-size': '16px',
       'line-height': '130%',
-      'font-weight': '400/700',
+      'font-weight': '400',
     },
     'text-s': {
       'font-size': '14px',
@@ -81,4 +83,4 @@ export const defaultTheme = {
       'font-weight': '400',
     },
   },
-}
+} as const

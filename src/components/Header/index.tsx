@@ -21,7 +21,7 @@ export const Header = () => {
         </LocationButton>
 
         <NavLink to="/checkout">
-          <CartButton addedItems={3}>
+          <CartButton $addedItems={3}>
             <ShoppingCartSimple size={22} weight="fill" />
           </CartButton>
         </NavLink>

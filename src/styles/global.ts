@@ -8,23 +8,23 @@ export const GlobalStyle = createGlobalStyle`
 	}
 	
 	body {
-		background-color: ${props => props.theme.background};
-		color: ${props => props.theme['base-text']};
+		background-color: ${props => props.theme.colors.background};
+		color: ${props => props.theme.colors['base-text']};
 		font-family: 'Roboto', sans-serif;
 	}
 
 	body > * {
-		max-width: 70rem;
+		max-width: 72rem;
 		margin-inline: auto;
 	}
 
 	h1 {
-		color: ${props => props.theme['base-title']};
+		color: ${props => props.theme.colors['base-title']};
 		font-family: 'Baloo 2', sans-serif;
 	}
 
 	h2, h3, h4, h5, h6 {
-		color: ${props => props.theme['base-subtitle']};
+		color: ${props => props.theme.colors['base-subtitle']};
 	}
 
   :focus,
@@ -41,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
 	}
 
 	input {
-		background-color: ${props => props.theme['base-input']};
+		background-color: ${props => props.theme.colors['base-input']};
 	}
 
 	button {

@@ -4,6 +4,7 @@ export const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  column-gap: 1rem;
 `
 
 export const HeaderActionsContainer = styled.div`
@@ -18,26 +19,26 @@ export const LocationButton = styled.button`
   column-gap: .25rem;
   padding: .5rem;
 
-  background-color: ${props => props.theme['purple-light']};
-  color: ${props => props.theme['purple-dark']};
+  background-color: ${props => props.theme.colors['purple-light']};
+  color: ${props => props.theme.colors['purple-dark']};
 
   svg {
-    color: ${props => props.theme['purple']};
+    color: ${props => props.theme.colors['purple']};
   }
 `
 
 type CartProps = {
-  addedItems?: number
+  $addedItems?: number
 }
 
 export const CartButton = styled.button<CartProps>`
   padding: 0.5rem;
-  background-color: ${props => props.theme['yellow-light']};
-  color: ${props => props.theme['yellow-dark']};
+  background-color: ${props => props.theme.colors['yellow-light']};
+  color: ${props => props.theme.colors['yellow-dark']};
   position: relative;
 
   &::before {
-    content: '${props => props.addedItems}';
+    content: '${props => props.$addedItems}';
     
     display: flex;
     justify-content: center;
@@ -51,7 +52,7 @@ export const CartButton = styled.button<CartProps>`
     transform: translate(40%, -40%);
 
 
-    background-color: ${props => props.theme['yellow-dark']};
+    background-color: ${props => props.theme.colors['yellow-dark']};
     color: white;
     border-radius: 50%;
 
