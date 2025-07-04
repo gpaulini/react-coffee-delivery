@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import type { defaultTheme } from '../../styles/themes/default'
 
-export const HeroContainer = styled.div`
+export const HeroContainer = styled.section`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding-block: 6rem;
   column-gap: 3.5rem;
@@ -32,7 +33,7 @@ export const HeroContainer = styled.div`
   }
 `
 
-export const HeroContent = styled.div`
+export const HeroContent = styled.article`
   max-width: 36rem;
 
   h1 {
@@ -45,12 +46,16 @@ export const HeroContent = styled.div`
   }
 
   @media screen and (max-width: 75rem) {
-    max-width: 42rem;
+    max-width: 39rem;
+
+    h1, p {
+      text-align: center;
+    }
   }
 
   @media screen and (max-width: 36rem) {
     h1 {
-      ${props => props.theme.fontStyles['title-m']}
+      ${props => props.theme.fontStyles['title-l']}
     }
   }
 `
@@ -64,6 +69,7 @@ export const HeroFeaturesList = styled.ul`
   row-gap: 1.5rem;
 
   @media screen and (max-width: 48rem) {
+    justify-content: center;
     margin-top: 2rem;
   }
 
@@ -77,14 +83,16 @@ type HeroFeaturesListItemProps = {
 }
 
 export const HeroFeaturesListItem = styled.li<HeroFeaturesListItemProps>`
-  min-width: 15rem;
   display: flex;
   align-items: center;
   column-gap: .75rem;
+  min-width: 15rem;
+  width: max-content;
 
   .iconWrapper {
-    width: 32px;
-    height: 32px;
+    flex: 0 0 auto;
+    width: 2rem;
+    height: 2rem;
     border-radius: 50%;
     display: flex;
     align-items: center;

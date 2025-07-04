@@ -21,6 +21,11 @@ export const defaultTheme = {
     'purple-dark': '#4B2995',
   },
 
+  fontFamily: {
+    baloo: '\'Baloo 2\', sans-serif',
+    roboto: '\'Roboto\', sans-serif',
+  },
+
   fontStyles: {
     'title-xl': {
       'font-size': '48px',
