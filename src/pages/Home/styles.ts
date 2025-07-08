@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ProductsContainer = styled.main`
+export const ShoppingItemsContainer = styled.main`
   margin-top: 2rem;
 
   h1 {
@@ -14,7 +14,7 @@ export const ProductsContainer = styled.main`
   }
 `
 
-export const ProductsList = styled.ul`
+export const ShoppingItemsList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   column-gap: 2rem;

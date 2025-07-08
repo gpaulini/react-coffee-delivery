@@ -21,10 +21,10 @@ export type TCoffeeLabel =
   | 'especial'
   | 'alcoólico'
 
-export type TProduct = {
+export type TCoffee = {
   variant: TCoffeeVariant,
-  labels: TCoffeeLabel[],
-  description: string,
+  labels?: TCoffeeLabel[],
+  description?: string,
   price: number,
   quantity: number
 }

@@ -6,7 +6,7 @@ export const InputContainer = styled.div`
   svg {
     height: 100%;
     cursor: pointer;
-    fill: ${props => props.theme.colors.purple};
+    color: ${props => props.theme.colors.purple};
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

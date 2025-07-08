@@ -1,5 +1,5 @@
 import { ShoppingCartSimple } from 'phosphor-react'
-import type { TCoffeeVariant, TProduct } from '../../@types/coffee'
+import type { TCoffee } from '../../@types/coffee'
 import {
   ProductAddToCartButton,
   ProductContainer,
@@ -7,38 +7,16 @@ import {
   ProductLabel,
 } from './styles'
 import { QuantityInput } from '../QuantityInput'
+import { coffeeImages, coffeeVariantsDict } from '../../static/coffee'
+import helpers from '../../helpers'
 
-const coffeeImages: string[] = Object.values<Record<string, string>>(
-  import.meta.glob(
-    '../../assets/coffees/*.png',
-    { eager: true },
-  ),
-).map(src => src.default)
-
-const coffeeVariantsDict: Record<TCoffeeVariant, string> = {
-  arabe: 'Árabe',
-  'cafe-com-leite': 'Café com leite',
-  capuccino: 'Capuccino',
-  'chocolate-quente': 'Chocolate quente',
-  cubano: 'Cubano',
-  'expresso-americano': 'Expresso Americano',
-  'expresso-cremoso': 'Expresso Cremoso',
-  'expresso-gelado': 'Expresso Gelado',
-  'expresso-tradicional': 'Expresso Tradicional',
-  havaiano: 'Havaiano',
-  irlandes: 'Irlandês',
-  latte: 'Latte',
-  macchiato: 'Macchiato',
-  mocaccino: 'Mocaccino',
-} as const
-
-export const Product = ({
+export const ShoppingItem = ({
   variant,
   labels,
   description,
   price,
   quantity,
-}: TProduct) => {
+}: TCoffee) => {
   const imgSrc = coffeeImages.find(src => src.includes(variant))
 
   return (
@@ -47,7 +25,7 @@ export const Product = ({
 
       <div className="labels">
         {
-          labels.length &&
+          labels?.length &&
           labels.map((lab, idx) => {
             return <ProductLabel key={idx}>{lab}</ProductLabel>
           })
@@ -65,7 +43,7 @@ export const Product = ({
       <ProductForm>
         <div className="totalPrice">
           <span>R$</span>
-          <strong>{(price * quantity).toFixed(2)}</strong>
+          <strong>{helpers.toBRL(price * quantity)}</strong>
         </div>
 
         <div className="actions">

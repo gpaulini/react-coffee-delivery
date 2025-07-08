@@ -1,32 +1,32 @@
 import { Hero } from '../../components/Hero'
 import {
-  ProductsContainer,
-  ProductsList,
+  ShoppingItemsContainer,
+  ShoppingItemsList,
 } from './styles'
 import { data as productsData } from '../../static/products'
-import { Product } from '../../components/Product'
+import { ShoppingItem } from '../../components/ShoppingItem'
 
 export const Home = () => {
   return (
     <>
       <Hero />
 
-      <ProductsContainer>
+      <ShoppingItemsContainer>
         <h1>Nossos Cafés</h1>
 
-        <ProductsList>
+        <ShoppingItemsList>
           {
             productsData.length &&
             productsData.map(data => {
               return (
                 <li key={btoa(data.variant)}>
-                  <Product {...data} />
+                  <ShoppingItem {...data} />
                 </li>
               )
             })
           }
-        </ProductsList>
-      </ProductsContainer>
+        </ShoppingItemsList>
+      </ShoppingItemsContainer>
     </>
   )
 }

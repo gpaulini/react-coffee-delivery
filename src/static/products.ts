@@ -1,6 +1,6 @@
-import type { TProduct } from '../@types/coffee'
+import type { TCoffee } from '../@types/coffee'
 
-export const data: TProduct[] = [
+export const data: TCoffee[] = [
   {
     variant: 'arabe',
     labels: ['especial'],
