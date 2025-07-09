@@ -23,7 +23,7 @@ export const CartItem = ({
       <CartItemMiddleInfo>
         <span className="name">{coffeeVariantsDict[variant]}</span>
         <QuantityInput value={quantity} />
-        <RemoveButton>
+        <RemoveButton type="button">
           <Trash size={22} weight="regular" />
           <span>Remover</span>
         </RemoveButton>

@@ -2,7 +2,6 @@ import styled from 'styled-components'
 
 export const CartItemContainer = styled.div`
   display: flex;
-  column-gap: 1.25rem;
   padding-bottom: 1.5rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid ${props => props.theme.colors['base-button']};
@@ -10,6 +9,7 @@ export const CartItemContainer = styled.div`
   img {
     width: 4rem;
     height: 4rem;
+    margin-right: 1rem;
   }
 `
 

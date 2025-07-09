@@ -1,4 +1,9 @@
-import { Bank, CreditCard, MapPinLine, Money } from 'phosphor-react'
+import {
+  Bank,
+  CreditCard,
+  CurrencyDollar,
+  MapPinLine, Money,
+} from 'phosphor-react'
 import {
   CheckoutForm,
   CheckoutFormSection,
@@ -13,15 +18,24 @@ import {
   OrderReviewContainer,
   OrderReviewInfo,
   SubmitOrderButton,
+  ZipcodeSearchingLabel,
+  OptionalInputTag,
 } from './styles'
 import { CartItem } from '../../components/CartItem'
 import { data as cartData } from '../../static/cart'
-import type { FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import helpers from '../../helpers'
+import { useNavigate } from 'react-router-dom'
 
 export const Checkout = () => {
+  const navigate = useNavigate()
+
+  const [isSearchingZipCode, setIsSearchingZipCode] = useState(false)
+
   const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    alert('pedido concluído!')
+    navigate('/order-confirmation', { replace: true })
   }
 
   const productsPrice = cartData?.reduce((prev, cur) => {
@@ -30,12 +44,21 @@ export const Checkout = () => {
   const deliveryFee = 4.5
   const totalPrice = productsPrice + deliveryFee
 
+  const handleZipCodeKeyDown = (e: FormEvent<HTMLInputElement>) => {
+    const input = e.currentTarget
+    const isEighthDigit = input.value.length + 1 === 8
+    if (isEighthDigit) {
+      e.preventDefault()
+      setIsSearchingZipCode(true)
+    }
+  }
+
   return (
     <CheckoutForm
       onSubmit={onSubmitHandler}
       action=""
     >
-      <CheckoutFormSection>
+      <CheckoutFormSection className="deliver-input">
         <h2>Complete seu pedido</h2>
 
         <AddressInputGroup>
@@ -53,7 +76,15 @@ export const Checkout = () => {
                 type="text"
                 name="zipcode"
                 placeholder="CEP"
+                onKeyDown={handleZipCodeKeyDown}
               />
+
+              {
+                isSearchingZipCode &&
+                  <ZipcodeSearchingLabel>
+                    Buscando endereço...
+                  </ZipcodeSearchingLabel>
+              }
             </AddressInputContainer>
 
             <AddressInputContainer>
@@ -78,7 +109,9 @@ export const Checkout = () => {
                 name="extra"
                 placeholder="Complemento"
               />
-              <span>Opcional</span>
+              <OptionalInputTag>
+                Opcional
+              </OptionalInputTag>
             </AddressInputContainer>
 
             <AddressInputContainer>
@@ -109,7 +142,7 @@ export const Checkout = () => {
 
         <PaymentInputGroup>
           <InputGroupLabel>
-            <MapPinLine size={28} />
+            <CurrencyDollar size={28} />
             <div>
               <h3>Pagamento</h3>
               <p>
@@ -138,7 +171,7 @@ export const Checkout = () => {
         </PaymentInputGroup>
       </CheckoutFormSection>
 
-      <CheckoutFormSection>
+      <CheckoutFormSection className="order-review">
         <h2>Cafés selecionados</h2>
 
         <OrderReviewContainer>
