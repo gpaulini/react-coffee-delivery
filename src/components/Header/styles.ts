@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
 export const HeaderContainer = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: ${props => props.theme.colors.background};
+  border-bottom: 1px solid ${props => props.theme.colors['base-card']};
   padding: 2rem 0;
   display: flex;
   justify-content: space-between;
