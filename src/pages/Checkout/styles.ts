@@ -207,7 +207,7 @@ export const OrderReviewContainer = styled(InputGroup)`
 `
 
 export const OrderReviewList = styled.ul`
-  max-height: 26rem;
+  max-height: 28rem;
   overflow: auto;
   padding-right: 2rem;
   margin-bottom: 1rem;

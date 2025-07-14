@@ -37,6 +37,23 @@ export const userReducer: React.Reducer<TShoppingState, TShoppingAction> =
         }
       }
 
+      case 'UPDATE_CART_ITEM_QUANTITY': {
+        const itemToUpdate = action.payload.variant
+        const newQuantity = action.payload.newQuantity
+        return {
+          ...state,
+          cart: state.cart.map(item => {
+            if (item.variant === itemToUpdate) {
+              return {
+                ...item,
+                quantity: newQuantity,
+              }
+            }
+            return item
+          }),
+        }
+      }
+
       default:
         return state
     }

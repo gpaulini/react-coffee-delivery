@@ -12,7 +12,8 @@ import {
   RemoveButton,
 } from './styles'
 import helpers from '../../helpers'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { ShoppingContext } from '../../contexts/ShopppingContext'
 
 type TCartItemProps = {
   item: TShoppingItem,
@@ -23,11 +24,20 @@ export const CartItem = ({
   item,
   onRemove,
 }: TCartItemProps) => {
+  const { shoppingDispatch } = useContext(ShoppingContext)
+
   const { price, quantity, variant } = item
   const [totalPrice, setTotalPrice] = useState(price * quantity)
 
   const handleChangeItemQuantity = (newQuantity: number) => {
     setTotalPrice(price * newQuantity)
+    shoppingDispatch({
+      type: 'UPDATE_CART_ITEM_QUANTITY',
+      payload: {
+        variant,
+        newQuantity,
+      },
+    })
   }
 
   const imgSrc = coffeeImages.find(src => src.includes(variant))

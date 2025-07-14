@@ -100,10 +100,13 @@ export const ShoppingItem = ({
       <ProductForm
         onSubmit={handleAddToCart}
       >
-        <div className="totalPrice">
-          <span>R$</span>
-          <strong>{helpers.toBRL(totalPrice)}</strong>
-        </div>
+        {
+          canAddToCart &&
+            <div className="totalPrice">
+              <span>R$</span>
+              <strong>{helpers.toBRL(totalPrice)}</strong>
+            </div>
+        }
 
         <div className="actions">
           <QuantityInput

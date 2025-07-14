@@ -19,3 +19,10 @@ export type TShoppingAction =
       variant: TShoppingItemVariant
     }
   }
+  | {
+    type: 'UPDATE_CART_ITEM_QUANTITY',
+    payload: {
+      variant: TShoppingItemVariant,
+      newQuantity: number
+    }
+  }
