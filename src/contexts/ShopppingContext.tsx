@@ -24,15 +24,25 @@ export const ShoppingContext = createContext({} as TShoppingContext)
 export const ShoppingContextProvider = ({
   children,
 }: TShoppingContextProviderProps) => {
-  const [shoppingState, shoppingDispatch] = useReducer(userReducer, {
-    cart: [],
-    address: null,
-    payment: null,
-  })
+  const localStorageKey = '@coffee-delivery:shopping:v1.0.0'
+
+  const [shoppingState, shoppingDispatch] =
+    useReducer(
+      userReducer,
+      {
+        cart: [],
+        address: null,
+        payment: null,
+      },
+      (initialState) => {
+        const stored = localStorage.getItem(localStorageKey)
+        return stored ? JSON.parse(stored) : initialState
+      },
+    )
 
   useEffect(() => {
-
-  }, [])
+    localStorage.setItem(localStorageKey, JSON.stringify(shoppingState))
+  }, [shoppingState])
 
   return (
     <ShoppingContext.Provider value={{ shoppingState, shoppingDispatch }}>
