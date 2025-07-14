@@ -27,6 +27,16 @@ export const userReducer: React.Reducer<TShoppingState, TShoppingAction> =
         }
       }
 
+      case 'REMOVE_FROM_CART': {
+        const itemToRemove = action.payload.variant
+        return {
+          ...state,
+          cart: state.cart.filter(item => {
+            return item.variant !== itemToRemove
+          }),
+        }
+      }
+
       default:
         return state
     }

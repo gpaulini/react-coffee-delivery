@@ -27,9 +27,10 @@ import { useContext, useEffect, useState, type FormEvent } from 'react'
 import helpers from '../../helpers'
 import { useNavigate } from 'react-router-dom'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
+import type { TShoppingItemVariant } from '../../@types/shopping-item'
 
 export const Checkout = () => {
-  const { shoppingState } = useContext(ShoppingContext)
+  const { shoppingState, shoppingDispatch } = useContext(ShoppingContext)
 
   const navigate = useNavigate()
 
@@ -54,6 +55,15 @@ export const Checkout = () => {
       e.preventDefault()
       setIsSearchingZipCode(true)
     }
+  }
+
+  const handleRemoveCartItem = (variant: TShoppingItemVariant) => {
+    shoppingDispatch({
+      type: 'REMOVE_FROM_CART',
+      payload: {
+        variant,
+      },
+    })
   }
 
   useEffect(() => {
@@ -189,7 +199,10 @@ export const Checkout = () => {
               shoppingState.cart.map(data => {
                 return (
                   <li key={btoa(data.variant)}>
-                    <CartItem {...data} />
+                    <CartItem
+                      item={{ ...data }}
+                      onRemove={handleRemoveCartItem}
+                    />
                   </li>
                 )
               })

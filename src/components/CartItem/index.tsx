@@ -1,5 +1,8 @@
 import { Trash } from 'phosphor-react'
-import type { TShoppingItem } from '../../@types/shopping-item'
+import type {
+  TShoppingItem,
+  TShoppingItemVariant,
+} from '../../@types/shopping-item'
 import { coffeeImages, coffeeVariantsDict } from '../../@static/coffee'
 import { QuantityInput } from '../QuantityInput'
 import {
@@ -11,11 +14,16 @@ import {
 import helpers from '../../helpers'
 import { useState } from 'react'
 
+type TCartItemProps = {
+  item: TShoppingItem,
+  onRemove: (variant: TShoppingItemVariant) => void
+}
+
 export const CartItem = ({
-  variant,
-  price,
-  quantity,
-}: TShoppingItem) => {
+  item,
+  onRemove,
+}: TCartItemProps) => {
+  const { price, quantity, variant } = item
   const [totalPrice, setTotalPrice] = useState(price * quantity)
 
   const handleChangeItemQuantity = (newQuantity: number) => {
@@ -34,7 +42,12 @@ export const CartItem = ({
           onChange={handleChangeItemQuantity}
           value={quantity}
         />
-        <RemoveButton type="button">
+        <RemoveButton
+          type="button"
+          onClick={() => {
+            onRemove(variant)
+          }}
+        >
           <Trash size={22} weight="regular" />
           <span>Remover</span>
         </RemoveButton>
