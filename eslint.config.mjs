@@ -12,6 +12,8 @@ const altConfig = [
       '@typescript-eslint/no-explicit-any': 'off',
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/no-tabs': 'off',
+      '@stylistic/multiline-ternary': 'off',
+      'no-debugger': 'off',
     },
   },
   {

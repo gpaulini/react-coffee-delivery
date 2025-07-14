@@ -38,10 +38,15 @@ export const CartButton = styled.button<CartProps>`
   color: ${props => props.theme.colors['yellow-dark']};
   position: relative;
 
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
   &::before {
     content: '${props => props.$addedItems}';
     
-    display: flex;
+    display: ${props => props.$addedItems ? 'flex' : 'none'};
     justify-content: center;
     align-items: center;
     width: 1.25rem;

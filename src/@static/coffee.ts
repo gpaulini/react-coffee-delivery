@@ -1,4 +1,4 @@
-import type { TCoffeeVariant } from '../@types/coffee'
+import type { TShoppingItemVariant } from '../@types/shopping-item'
 
 export const coffeeImages: string[] = Object.values<Record<string, string>>(
   import.meta.glob(
@@ -7,7 +7,7 @@ export const coffeeImages: string[] = Object.values<Record<string, string>>(
   ),
 ).map(src => src.default)
 
-export const coffeeVariantsDict: Record<TCoffeeVariant, string> = {
+export const coffeeVariantsDict: Record<TShoppingItemVariant, string> = {
   arabe: 'Árabe',
   'cafe-com-leite': 'Café com leite',
   capuccino: 'Capuccino',

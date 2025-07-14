@@ -3,6 +3,12 @@ import styled from 'styled-components'
 export const InputContainer = styled.div`
   position: relative;
 
+  &.disabled {
+    svg {
+      display: none;
+    }
+  }
+
   svg {
     height: 100%;
     cursor: pointer;

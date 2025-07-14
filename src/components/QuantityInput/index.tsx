@@ -1,39 +1,68 @@
 import { Minus, Plus } from 'phosphor-react'
 import { InputContainer, StyledInput } from './styles'
-import { useState, type FormEvent } from 'react'
+import { useState, type ChangeEvent } from 'react'
+import { MAX_QUANTITY_ALLOWED, MIN_QUANTITY_ALLOWED } from '../../App'
 
-type QuantityInputProps = {
-  value?: number
+type TQuantityInputProps = {
+  onChange: (value: number) => void
+  value?: number,
+  isDisabled?: boolean,
 }
 
 export const QuantityInput = ({
+  onChange,
   value,
-}: QuantityInputProps) => {
-  const [quantity, setQuantity] = useState(value || 1)
+  isDisabled,
+}: TQuantityInputProps) => {
+  const [quantity, setQuantity] = useState(value || MIN_QUANTITY_ALLOWED)
+
+  const updateQuantity = (newQuantity: number) => {
+    setQuantity(newQuantity)
+    onChange(newQuantity)
+  }
 
   return (
-    <InputContainer>
+    <InputContainer className={isDisabled ? 'disabled' : ''}>
       <Minus
         size={14}
         weight="bold"
-        onClick={() => setQuantity(prev => prev - 1)}
+        onClick={() => {
+          if (isDisabled) return
+          if (quantity > MIN_QUANTITY_ALLOWED) {
+            updateQuantity(
+              Number.isNaN(quantity)
+                ? 0
+                : quantity - 1,
+            )
+          }
+        }}
       />
       <StyledInput
-        type="number"
+        type={isDisabled ? 'text' : 'number'}
+        value={isDisabled ? 'MAX' : quantity}
         name="quantity"
-        value={quantity}
-        onChange={
-          (e: FormEvent<HTMLInputElement>) => {
-            setQuantity(parseInt(e.currentTarget.value))
-          }
-        }
-        min={1}
-        max={99}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          let updated = e.currentTarget.valueAsNumber
+          if (updated > MAX_QUANTITY_ALLOWED) updated = MAX_QUANTITY_ALLOWED
+          if (Number.isNaN(updated)) updated = MIN_QUANTITY_ALLOWED
+          setQuantity(updated)
+          onChange(updated)
+        }}
+        disabled={isDisabled}
       />
       <Plus
         size={14}
         weight="bold"
-        onClick={() => setQuantity(prev => prev + 1)}
+        onClick={() => {
+          if (isDisabled) return
+          if (quantity < MAX_QUANTITY_ALLOWED) {
+            updateQuantity(
+              Number.isNaN(quantity)
+                ? 1
+                : quantity + 1,
+            )
+          }
+        }}
       />
     </InputContainer>
   )

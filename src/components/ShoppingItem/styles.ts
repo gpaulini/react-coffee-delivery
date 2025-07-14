@@ -47,14 +47,14 @@ export const ProductLabel = styled.span`
   ${props => props.theme.fontStyles.tag}
 `
 
-export const ProductForm = styled.div`
+export const ProductForm = styled.form`
   width: 100%;
   display: flex;
   align-items: center;
-  column-gap: 1.5rem;
   margin-top: 2rem;
 
   .totalPrice {
+    flex: 1 0 auto;
     display: flex;
     align-items: center;
     column-gap: .25rem;
@@ -78,6 +78,11 @@ export const ProductAddToCartButton = styled.button`
   align-items: center;
   justify-content: center;
   flex: 0 0 2.5rem;
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
 
   background-color: ${props => props.theme.colors['purple-dark']};
 

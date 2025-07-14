@@ -3,7 +3,7 @@ import {
   ShoppingItemsContainer,
   ShoppingItemsList,
 } from './styles'
-import { data as productsData } from '../../static/products'
+import { data as productsData } from '../../@static/products'
 import { ShoppingItem } from '../../components/ShoppingItem'
 
 export const Home = () => {
@@ -20,7 +20,7 @@ export const Home = () => {
             productsData.map(data => {
               return (
                 <li key={btoa(data.variant)}>
-                  <ShoppingItem {...data} />
+                  <ShoppingItem item={{ ...data }} />
                 </li>
               )
             })

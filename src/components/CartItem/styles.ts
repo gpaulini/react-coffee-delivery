@@ -47,7 +47,7 @@ export const RemoveButton = styled.button`
 `
 
 export const CartItemPrice = styled.strong`
-  flex: 1 0 auto;
+  flex: 1 0 5rem;
   text-align: right;
   color: ${props => props.theme.colors['base-text']};
   ${props => props.theme.fontStyles['text-m']};

@@ -6,6 +6,7 @@ export const GlobalStyle = createGlobalStyle`
 		padding: 0;
 		box-sizing: border-box;
 		list-style: none;
+		scroll-behavior: smooth;
 	}
 	
 	body {
@@ -58,5 +59,18 @@ export const GlobalStyle = createGlobalStyle`
 
 	button {
 		cursor: pointer;
+	}
+
+	::-webkit-scrollbar {
+		width: 4px;
+		height: 12px;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background: ${props => props.theme.colors.yellow};
+	}
+
+	::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.2);
 	}
 `

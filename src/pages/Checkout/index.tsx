@@ -20,14 +20,17 @@ import {
   SubmitOrderButton,
   ZipcodeSearchingLabel,
   OptionalInputTag,
+  OrderReviewList,
 } from './styles'
 import { CartItem } from '../../components/CartItem'
-import { data as cartData } from '../../static/cart'
-import { useState, type FormEvent } from 'react'
+import { useContext, useEffect, useState, type FormEvent } from 'react'
 import helpers from '../../helpers'
 import { useNavigate } from 'react-router-dom'
+import { ShoppingContext } from '../../contexts/ShopppingContext'
 
 export const Checkout = () => {
+  const { shoppingState } = useContext(ShoppingContext)
+
   const navigate = useNavigate()
 
   const [isSearchingZipCode, setIsSearchingZipCode] = useState(false)
@@ -38,7 +41,7 @@ export const Checkout = () => {
     navigate('/order-confirmation', { replace: true })
   }
 
-  const productsPrice = cartData?.reduce((prev, cur) => {
+  const productsPrice = shoppingState.cart.reduce((prev, cur) => {
     return prev + (cur.price * cur.quantity)
   }, 0)
   const deliveryFee = 4.5
@@ -52,6 +55,12 @@ export const Checkout = () => {
       setIsSearchingZipCode(true)
     }
   }
+
+  useEffect(() => {
+    if (shoppingState.cart.length === 0) {
+      navigate('/')
+    }
+  }, [navigate, shoppingState.cart.length])
 
   return (
     <CheckoutForm
@@ -175,18 +184,17 @@ export const Checkout = () => {
         <h2>Cafés selecionados</h2>
 
         <OrderReviewContainer>
-          <ul>
+          <OrderReviewList>
             {
-              cartData.length &&
-                cartData.map(data => {
-                  return (
-                    <li key={btoa(data.variant)}>
-                      <CartItem {...data} />
-                    </li>
-                  )
-                })
+              shoppingState.cart.map(data => {
+                return (
+                  <li key={btoa(data.variant)}>
+                    <CartItem {...data} />
+                  </li>
+                )
+              })
             }
-          </ul>
+          </OrderReviewList>
 
           <OrderReviewInfo>
             <div>

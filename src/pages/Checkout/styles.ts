@@ -206,6 +206,18 @@ export const OrderReviewContainer = styled(InputGroup)`
   border-radius: 6px 44px 6px 44px;
 `
 
+export const OrderReviewList = styled.ul`
+  max-height: 26rem;
+  overflow: auto;
+  padding-right: 2rem;
+  margin-bottom: 1rem;
+
+  li:last-child div {
+    border-bottom: 0;
+    margin-bottom: 0;
+  }
+`
+
 export const OrderReviewInfo = styled.div`
   display: flex;
   flex-direction: column;
