@@ -4,7 +4,7 @@ import React, {
   useReducer,
   type Dispatch,
 } from 'react'
-import { userReducer } from '../reducers/shoppingReducer'
+import { shoppingReducer } from '../reducers/shoppingReducer'
 import type {
   TShoppingAction,
   TShoppingState,
@@ -28,7 +28,7 @@ export const ShoppingContextProvider = ({
 
   const [shoppingState, shoppingDispatch] =
     useReducer(
-      userReducer,
+      shoppingReducer,
       {
         cart: [],
         address: null,
@@ -41,7 +41,13 @@ export const ShoppingContextProvider = ({
     )
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(shoppingState))
+    localStorage.setItem(
+      localStorageKey,
+      JSON.stringify({
+        cart: shoppingState.cart,
+        address: shoppingState.address,
+      }),
+    )
   }, [shoppingState])
 
   return (

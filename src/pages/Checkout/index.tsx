@@ -1,60 +1,64 @@
-import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine, Money,
-} from 'phosphor-react'
+import { CurrencyDollar, MapPinLine } from 'phosphor-react'
 import {
   CheckoutForm,
   CheckoutFormSection,
   AddressInputGroup,
   InputGroupLabel,
-  AddressFormContainer,
-  AddressInputContainer,
-  AddressInput,
   PaymentInputGroup,
-  PaymentFormContainer,
-  PaymentOption,
   OrderReviewContainer,
   OrderReviewInfo,
   SubmitOrderButton,
-  ZipcodeSearchingLabel,
-  OptionalInputTag,
   OrderReviewList,
 } from './styles'
 import { CartItem } from '../../components/CartItem'
-import { useContext, useEffect, useState, type FormEvent } from 'react'
+import {
+  useContext,
+  useEffect,
+} from 'react'
 import helpers from '../../helpers'
 import { useNavigate } from 'react-router-dom'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 import type { TShoppingItemVariant } from '../../@types/shopping-item'
+import { AddressForm } from '../../components/AddressForm'
+import { FormProvider, useForm, type SubmitErrorHandler } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  checkoutFormValidationSchema,
+  type TCheckoutFormSchema,
+} from '../../schema'
+import { PaymentForm } from '../../components/PaymentForm'
 
 export const Checkout = () => {
   const { shoppingState, shoppingDispatch } = useContext(ShoppingContext)
 
+  const useFormMethods = useForm<TCheckoutFormSchema>({
+    resolver: zodResolver(checkoutFormValidationSchema),
+  })
+
+  const { handleSubmit } = useFormMethods
+
   const navigate = useNavigate()
 
-  const [isSearchingZipCode, setIsSearchingZipCode] = useState(false)
+  const onValidSubmit = (data: TCheckoutFormSchema) => {
+    const { payment, ...address } = data
+    shoppingDispatch({
+      type: 'SAVE_ADDRESS',
+      payload: {
+        address: { ...address },
+      },
+    })
 
-  const onSubmitHandler = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    alert('pedido concluído!')
+    shoppingDispatch({
+      type: 'SET_PAYMENT',
+      payload: { payment },
+    })
+
     navigate('/order-confirmation', { replace: true })
   }
 
-  const productsPrice = shoppingState.cart.reduce((prev, cur) => {
-    return prev + (cur.price * cur.quantity)
-  }, 0)
-  const deliveryFee = 4.5
-  const totalPrice = productsPrice + deliveryFee
-
-  const handleZipCodeKeyDown = (e: FormEvent<HTMLInputElement>) => {
-    const input = e.currentTarget
-    const isEighthDigit = input.value.length + 1 === 8
-    if (isEighthDigit) {
-      e.preventDefault()
-      setIsSearchingZipCode(true)
-    }
+  const onInvalidSubmit: SubmitErrorHandler<TCheckoutFormSchema> = (errors) => {
+    console.log('invalid form')
+    console.log(errors)
   }
 
   const handleRemoveCartItem = (variant: TShoppingItemVariant) => {
@@ -66,6 +70,12 @@ export const Checkout = () => {
     })
   }
 
+  const productsPrice = shoppingState.cart.reduce((prev, cur) => {
+    return prev + (cur.price * cur.quantity)
+  }, 0)
+  const deliveryFee = 4.5
+  const totalPrice = productsPrice + deliveryFee
+
   useEffect(() => {
     if (shoppingState.cart.length === 0) {
       navigate('/')
@@ -74,120 +84,41 @@ export const Checkout = () => {
 
   return (
     <CheckoutForm
-      onSubmit={onSubmitHandler}
+      onSubmit={handleSubmit(onValidSubmit, onInvalidSubmit)}
       action=""
+      autoComplete="off"
     >
       <CheckoutFormSection className="deliver-input">
         <h2>Complete seu pedido</h2>
 
-        <AddressInputGroup>
-          <InputGroupLabel>
-            <MapPinLine size={28} />
-            <div>
-              <h3>Endereço de Entrega</h3>
-              <p>Informe o endereço onde deseja receber seu pedido</p>
-            </div>
-          </InputGroupLabel>
+        <FormProvider {...useFormMethods}>
+          <AddressInputGroup>
+            <InputGroupLabel>
+              <MapPinLine size={28} />
+              <div>
+                <h3>Endereço de Entrega</h3>
+                <p>Informe o endereço onde deseja receber seu pedido</p>
+              </div>
+            </InputGroupLabel>
 
-          <AddressFormContainer>
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="zipcode"
-                placeholder="CEP"
-                onKeyDown={handleZipCodeKeyDown}
-              />
+            <AddressForm />
+          </AddressInputGroup>
 
-              {
-                isSearchingZipCode &&
-                  <ZipcodeSearchingLabel>
-                    Buscando endereço...
-                  </ZipcodeSearchingLabel>
-              }
-            </AddressInputContainer>
+          <PaymentInputGroup>
+            <InputGroupLabel>
+              <CurrencyDollar size={28} />
+              <div>
+                <h3>Pagamento</h3>
+                <p>
+                  O pagamento é feito na entrega.
+                  Escolha a forma que deseja pagar
+                </p>
+              </div>
+            </InputGroupLabel>
 
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="street"
-                placeholder="Rua"
-              />
-            </AddressInputContainer>
-
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="number"
-                placeholder="Número"
-              />
-            </AddressInputContainer>
-
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="extra"
-                placeholder="Complemento"
-              />
-              <OptionalInputTag>
-                Opcional
-              </OptionalInputTag>
-            </AddressInputContainer>
-
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="district"
-                placeholder="Bairro"
-              />
-            </AddressInputContainer>
-
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="city"
-                placeholder="Cidade"
-              />
-            </AddressInputContainer>
-
-            <AddressInputContainer>
-              <AddressInput
-                type="text"
-                name="state"
-                placeholder="UF"
-              />
-            </AddressInputContainer>
-          </AddressFormContainer>
-        </AddressInputGroup>
-
-        <PaymentInputGroup>
-          <InputGroupLabel>
-            <CurrencyDollar size={28} />
-            <div>
-              <h3>Pagamento</h3>
-              <p>
-                O pagamento é feito na entrega.
-                Escolha a forma que deseja pagar
-              </p>
-            </div>
-          </InputGroupLabel>
-
-          <PaymentFormContainer>
-            <PaymentOption>
-              <CreditCard size={18} />
-              <span>cartão de crédito</span>
-            </PaymentOption>
-
-            <PaymentOption>
-              <Bank size={18} />
-              <span>cartão de débito</span>
-            </PaymentOption>
-
-            <PaymentOption>
-              <Money size={18} />
-              <span>dinheiro</span>
-            </PaymentOption>
-          </PaymentFormContainer>
-        </PaymentInputGroup>
+            <PaymentForm />
+          </PaymentInputGroup>
+        </FormProvider>
       </CheckoutFormSection>
 
       <CheckoutFormSection className="order-review">

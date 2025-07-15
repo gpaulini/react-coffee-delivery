@@ -30,7 +30,7 @@ export type TShoppingItem = {
 }
 
 export type TDeliveryAddress = {
-  zipcode: string,
+  zipcode?: string,
   street: string,
   number: string,
   extra?: string,
@@ -43,6 +43,6 @@ export type TPayment = 'credit' | 'debit' | 'cash'
 
 export type TShoppingData = {
   cart: TShoppingItem[],
-  address: TDeliveryAddress | null,
-  payment: TPayment | null
+  address: TDeliveryAddress,
+  payment: TPayment
 }

@@ -1,7 +1,7 @@
 import type React from 'react'
 import type { TShoppingAction, TShoppingState } from './types'
 
-export const userReducer: React.Reducer<TShoppingState, TShoppingAction> =
+export const shoppingReducer: React.Reducer<TShoppingState, TShoppingAction> =
   (state, action) => {
     switch (action.type) {
       case 'ADD_TO_CART': {
@@ -51,6 +51,20 @@ export const userReducer: React.Reducer<TShoppingState, TShoppingAction> =
             }
             return item
           }),
+        }
+      }
+
+      case 'SAVE_ADDRESS': {
+        return {
+          ...state,
+          address: action.payload.address,
+        }
+      }
+
+      case 'SET_PAYMENT': {
+        return {
+          ...state,
+          payment: action.payload.payment,
         }
       }
 
