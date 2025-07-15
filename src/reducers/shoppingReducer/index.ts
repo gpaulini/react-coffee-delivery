@@ -68,6 +68,21 @@ export const shoppingReducer: React.Reducer<TShoppingState, TShoppingAction> =
         }
       }
 
+      case 'SET_IS_ORDER_FINISHED': {
+        return {
+          ...state,
+          isOrderFinished: action.payload.isOrderFinished,
+        }
+      }
+
+      case 'FINISH_ORDER': {
+        return {
+          ...state,
+          cart: [],
+          payment: null,
+        }
+      }
+
       default:
         return state
     }

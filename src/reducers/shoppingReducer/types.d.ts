@@ -6,7 +6,9 @@ import type {
   TPayment,
 } from '../../@types/shopping-item'
 
-export type TShoppingState = TShoppingData & {}
+export type TShoppingState = TShoppingData & {
+  isOrderFinished: boolean
+}
 
 export type TShoppingAction =
   | {
@@ -39,4 +41,13 @@ export type TShoppingAction =
     payload: {
       payment: TPayment
     }
+  }
+  | {
+    type: 'SET_IS_ORDER_FINISHED',
+    payload: {
+      isOrderFinished: boolean
+    }
+  }
+  | {
+    type: 'FINISH_ORDER',
   }

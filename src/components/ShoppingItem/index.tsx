@@ -69,7 +69,7 @@ export const ShoppingItem = ({
       },
     })
 
-    alert(finalQuantityToBeAdded + 'x itens adicionados')
+    // alert(finalQuantityToBeAdded + 'x itens adicionados')
   }
 
   const handleOnChangeQuantity = (newQuantity: number) => {

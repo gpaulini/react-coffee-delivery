@@ -1,18 +1,39 @@
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
-import { FlexContainer, OrderDetailsList, OrderDetailsListItem } from './styles'
+import {
+  FlexContainer,
+  OrderDetailsList,
+  OrderDetailsListItem,
+  TotalPriceWrapper,
+} from './styles'
 import deliveryImage from '../../assets/delivery.png'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 import { coffeeVariantsDict } from '../../@static/coffee'
 import helpers from '../../helpers'
+import { useNavigate } from 'react-router-dom'
 
 export const OrderConfirmation = () => {
-  const { shoppingState } = useContext(ShoppingContext)
+  const { shoppingState, shoppingDispatch } = useContext(ShoppingContext)
   const { cart, address, payment } = shoppingState
+
+  const navigate = useNavigate()
 
   const totalPrice = cart.reduce((prev, cur) => {
     return prev + (cur.price * cur.quantity)
   }, 0)
+
+  useEffect(() => {
+    shoppingDispatch({
+      type: 'SET_IS_ORDER_FINISHED',
+      payload: {
+        isOrderFinished: true,
+      },
+    })
+
+    if (shoppingState.cart.length === 0) {
+      navigate('/')
+    }
+  }, [shoppingDispatch, shoppingState.cart.length, navigate])
 
   return (
     <FlexContainer>
@@ -52,26 +73,29 @@ export const OrderConfirmation = () => {
             </div>
             <p>
               Pagamento na entrega <br />
-              <b>{payment.toUpperCase()}</b>
+              <b>{payment?.toUpperCase()}</b>
             </p>
           </OrderDetailsListItem>
 
           <div>
             {
-              cart.length &&
-              cart.map((item) => {
-                return (
-                  <p key={btoa(item.variant)}>
-                    <b>{item.quantity}x</b> {coffeeVariantsDict[item.variant]}
-                  </p>
-                )
-              })
+              cart.length
+                ? cart.map((item) => {
+                    return (
+                      <p key={btoa(item.variant)}>
+                        <b>{item.quantity}&times;</b>
+                        {coffeeVariantsDict[item.variant]}
+                      </p>
+                    )
+                  })
+                : ''
             }
           </div>
-          <div>
-            <span>Total</span>
-            <span>R$ {helpers.toBRL(totalPrice)}</span>
-          </div>
+          <TotalPriceWrapper>
+            <b>Total</b>
+            <hr />
+            <p><small>R$</small> {helpers.toBRL(totalPrice)}</p>
+          </TotalPriceWrapper>
         </OrderDetailsList>
       </div>
       <img src={deliveryImage} alt="" />

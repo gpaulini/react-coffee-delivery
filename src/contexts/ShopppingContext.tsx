@@ -43,10 +43,7 @@ export const ShoppingContextProvider = ({
   useEffect(() => {
     localStorage.setItem(
       localStorageKey,
-      JSON.stringify({
-        cart: shoppingState.cart,
-        address: shoppingState.address,
-      }),
+      JSON.stringify(shoppingState),
     )
   }, [shoppingState])
 

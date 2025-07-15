@@ -5,8 +5,27 @@ import {
 } from './styles'
 import { data as productsData } from '../../@static/products'
 import { ShoppingItem } from '../../components/ShoppingItem'
+import { useContext, useEffect } from 'react'
+import { ShoppingContext } from '../../contexts/ShopppingContext'
 
 export const Home = () => {
+  const { shoppingState, shoppingDispatch } = useContext(ShoppingContext)
+
+  useEffect(() => {
+    if (shoppingState.isOrderFinished) {
+      shoppingDispatch({
+        type: 'FINISH_ORDER',
+      })
+
+      shoppingDispatch({
+        type: 'SET_IS_ORDER_FINISHED',
+        payload: {
+          isOrderFinished: false,
+        },
+      })
+    }
+  }, [shoppingState, shoppingDispatch])
+
   return (
     <>
       <Hero />

@@ -82,5 +82,27 @@ export const OrderDetailsListItem = styled.li`
   &.payment .iconWrapper {
     background-color: ${props => props.theme.colors['yellow-dark']}
   }
+`
 
+export const TotalPriceWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 1rem;
+
+  b {
+    ${props => props.theme.fontStyles['title-l']}
+  }
+
+  hr {
+    flex: 1 0 auto;
+  }
+
+  p {
+    ${props => props.theme.fontStyles['text-l']}
+  }
+
+  small {
+    font-weight: bold;
+  }
 `
