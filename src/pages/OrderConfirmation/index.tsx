@@ -1,8 +1,19 @@
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
 import { FlexContainer, OrderDetailsList, OrderDetailsListItem } from './styles'
 import deliveryImage from '../../assets/delivery.png'
+import { useContext } from 'react'
+import { ShoppingContext } from '../../contexts/ShopppingContext'
+import { coffeeVariantsDict } from '../../@static/coffee'
+import helpers from '../../helpers'
 
 export const OrderConfirmation = () => {
+  const { shoppingState } = useContext(ShoppingContext)
+  const { cart, address, payment } = shoppingState
+
+  const totalPrice = cart.reduce((prev, cur) => {
+    return prev + (cur.price * cur.quantity)
+  }, 0)
+
   return (
     <FlexContainer>
       <div>
@@ -15,8 +26,13 @@ export const OrderConfirmation = () => {
               <MapPin size={18} weight="fill" />
             </div>
             <p>
-              Entrega em <b>Rua Santo Antônio, 357</b><br />
-              Bom Fim - Porto Alegre, RS
+              Entrega em <br />
+              <b>
+                {address.street}, {address.number}
+                {address.extra ? '/' + address.extra : ''}
+              </b>
+              <br />
+              {address.district} - {address.city}, {address.state}
             </p>
           </OrderDetailsListItem>
 
@@ -32,13 +48,30 @@ export const OrderConfirmation = () => {
 
           <OrderDetailsListItem className="payment">
             <div className="iconWrapper">
-              <CurrencyDollar size={18} weight="fill" />
+              <CurrencyDollar size={18} weight="bold" />
             </div>
             <p>
               Pagamento na entrega <br />
-              <b>Cartão de crédito</b>
+              <b>{payment.toUpperCase()}</b>
             </p>
           </OrderDetailsListItem>
+
+          <div>
+            {
+              cart.length &&
+              cart.map((item) => {
+                return (
+                  <p key={btoa(item.variant)}>
+                    <b>{item.quantity}x</b> {coffeeVariantsDict[item.variant]}
+                  </p>
+                )
+              })
+            }
+          </div>
+          <div>
+            <span>Total</span>
+            <span>R$ {helpers.toBRL(totalPrice)}</span>
+          </div>
         </OrderDetailsList>
       </div>
       <img src={deliveryImage} alt="" />
