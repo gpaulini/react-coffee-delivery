@@ -1,6 +1,7 @@
 import { ShoppingCartSimple } from 'phosphor-react'
 import type { TShoppingItem } from '../../@types/shopping-item'
 import {
+  AnimatedAddedQuantity,
   ProductAddToCartButton,
   ProductContainer,
   ProductForm,
@@ -9,7 +10,7 @@ import {
 import { QuantityInput } from '../QuantityInput'
 import { coffeeImages, coffeeVariantsDict } from '../../@static/coffee'
 import helpers from '../../helpers'
-import { useContext, useState, type FormEvent } from 'react'
+import { useContext, useEffect, useState, type FormEvent } from 'react'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 import { MAX_QUANTITY_ALLOWED } from '../../App'
 
@@ -29,6 +30,10 @@ export const ShoppingItem = ({
   } = item
 
   const [totalPrice, setTotalPrice] = useState(quantity * price)
+  const [animateAddToCart, setAnimateAddToCart] = useState({
+    animate: false,
+    quantity: 0,
+  })
 
   const { shoppingState, shoppingDispatch } = useContext(ShoppingContext)
 
@@ -69,12 +74,27 @@ export const ShoppingItem = ({
       },
     })
 
-    // alert(finalQuantityToBeAdded + 'x itens adicionados')
+    // handle animation
+    setAnimateAddToCart({
+      animate: true,
+      quantity: finalQuantityToBeAdded,
+    })
   }
 
   const handleOnChangeQuantity = (newQuantity: number) => {
     setTotalPrice((price * newQuantity) || 0)
   }
+
+  useEffect(() => {
+    if (animateAddToCart.animate) {
+      setTimeout(() => {
+        setAnimateAddToCart({
+          animate: false,
+          quantity: 0,
+        })
+      }, 510)
+    }
+  }, [animateAddToCart])
 
   return (
     <ProductContainer>
@@ -117,6 +137,10 @@ export const ShoppingItem = ({
             type="submit"
             disabled={!canAddToCart}
           >
+            {
+              animateAddToCart.animate &&
+                <AnimatedAddedQuantity $quantity={animateAddToCart.quantity} />
+            }
             <ShoppingCartSimple size={20} weight="fill" />
           </ProductAddToCartButton>
         </div>

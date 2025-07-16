@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const HeaderContainer = styled.header`
   position: sticky;
@@ -33,6 +33,29 @@ export const LocationButton = styled.button`
   }
 `
 
+const shaking = keyframes`
+  0%,
+  100% {
+    transform: translateY(0) rotate(0);
+    transform-origin: 50% 50%;
+  }
+  15% {
+    transform: translateY(-30px) rotate(6deg);
+  }
+  30% {
+    transform: translateY(15px) rotate(-6deg);
+  }
+  45% {
+    transform: translateY(-15px) rotate(3.6deg);
+  }
+  60% {
+    transform: translateY(9px) rotate(-2.4deg);
+  }
+  75% {
+    transform: translateY(-6px) rotate(1.2deg);
+  }
+`
+
 type CartProps = {
   $addedItems?: number
 }
@@ -46,6 +69,10 @@ export const CartButton = styled.button<CartProps>`
   &:disabled {
     opacity: .5;
     cursor: not-allowed;
+  }
+
+  &.shaking {
+    animation: ${shaking} 1s linear ;
   }
 
   &::before {

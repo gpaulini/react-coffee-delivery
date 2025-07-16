@@ -11,7 +11,7 @@ import { useContext } from 'react'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 
 export const Header = () => {
-  const { shoppingState } = useContext(ShoppingContext)
+  const { shoppingState, didCartLengthChanged } = useContext(ShoppingContext)
 
   return (
     <HeaderContainer>
@@ -28,6 +28,7 @@ export const Header = () => {
           <CartButton
             $addedItems={shoppingState.cart.length}
             disabled={shoppingState.cart.length === 0}
+            className={didCartLengthChanged ? 'shaking' : ''}
           >
             <ShoppingCartSimple size={22} weight="fill" />
           </CartButton>

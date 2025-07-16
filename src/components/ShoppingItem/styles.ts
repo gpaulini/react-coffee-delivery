@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 export const ProductContainer = styled.div`
   display: flex;
@@ -71,6 +71,7 @@ export const ProductForm = styled.form`
     display: flex;
     align-items: stretch;
     column-gap: .5rem;
+    margin-left: auto;
   }
 `
 export const ProductAddToCartButton = styled.button`
@@ -78,6 +79,7 @@ export const ProductAddToCartButton = styled.button`
   align-items: center;
   justify-content: center;
   flex: 0 0 2.5rem;
+  position: relative;
 
   &:disabled {
     opacity: .5;
@@ -88,5 +90,45 @@ export const ProductAddToCartButton = styled.button`
 
   svg {
     fill: ${props => props.theme.colors['base-card']}
+  }
+`
+
+const floatUp = keyframes`
+  0%,
+  100% {
+    top: 0;
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+    top: -60%;
+  }
+
+  70% {
+    top: -90%;
+    opacity: .25;
+  }
+
+  80% {
+    opacity: 0;
+  }
+`
+
+type TAnimatedAddedQuantityProps = {
+  $quantity: number
+}
+
+export const AnimatedAddedQuantity = styled.span<TAnimatedAddedQuantityProps>`
+  position: absolute;
+  top: 0;
+  animation: ${floatUp} .5s ease-out forwards;
+
+  &::after {
+    content: '+${props => props.$quantity}';
+    color: ${props => props.theme.colors.purple};
+    
+    ${props => props.theme.fontStyles['text-m']};
+    font-weight: bold;
   }
 `
