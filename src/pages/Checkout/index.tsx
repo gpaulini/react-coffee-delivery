@@ -59,6 +59,8 @@ export const Checkout = () => {
   const onInvalidSubmit: SubmitErrorHandler<TCheckoutFormSchema> = (errors) => {
     console.log('invalid form')
     console.log(errors)
+    console.log(errors.zipcode?.ref?.value,
+      /^[0-9]{8}$/.test(errors.zipcode?.ref?.value))
   }
 
   const handleRemoveCartItem = (variant: TShoppingItemVariant) => {
@@ -81,6 +83,21 @@ export const Checkout = () => {
       navigate('/')
     }
   }, [navigate, shoppingState.cart.length])
+
+  useEffect(() => {
+    if (shoppingState.isOrderFinished) {
+      shoppingDispatch({
+        type: 'FINISH_ORDER',
+      })
+
+      shoppingDispatch({
+        type: 'SET_IS_ORDER_FINISHED',
+        payload: {
+          isOrderFinished: false,
+        },
+      })
+    }
+  }, [shoppingState, shoppingDispatch])
 
   return (
     <CheckoutForm

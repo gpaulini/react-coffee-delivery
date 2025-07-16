@@ -44,5 +44,5 @@ export type TPayment = 'credit' | 'debit' | 'cash'
 export type TShoppingData = {
   cart: TShoppingItem[],
   address: TDeliveryAddress,
-  payment: TPayment
+  payment: TPayment | null
 }

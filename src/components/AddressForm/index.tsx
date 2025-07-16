@@ -1,4 +1,6 @@
 import React, {
+  useContext,
+  useEffect,
   useRef,
   useState,
   type ChangeEventHandler,
@@ -14,14 +16,17 @@ import {
 } from './style'
 import { useFormContext } from 'react-hook-form'
 import type { TCheckoutFormSchema } from '../../schema'
+import { ShoppingContext } from '../../contexts/ShopppingContext'
+import type { TDeliveryAddress } from '../../@types/shopping-item'
 
 export const AddressForm = () => {
+  const { shoppingState } = useContext(ShoppingContext)
+  const { register, setValue, setFocus } = useFormContext<TCheckoutFormSchema>()
+  const [isUnknownZipCode, setIsUnknownZipCode] = useState(false)
   const [isSearchingZipCode, setIsSearchingZipCode] = useState(false)
   const [isZipCodeIncomplete, setIsZipCodeIncomplete] = useState(false)
   const [isZipCodeInvalid, setIsZipCodeInvalid] = useState(false)
   const [isZipCodeFound, setIsZipCodeFound] = useState(false)
-
-  const { register, setValue, setFocus } = useFormContext<TCheckoutFormSchema>()
 
   const handleZipCodeKeyUp: React.KeyboardEventHandler<HTMLInputElement> =
     async (e) => {
@@ -57,8 +62,9 @@ export const AddressForm = () => {
 
   const handleZipCodeKeyDown: React.KeyboardEventHandler<HTMLInputElement> =
     (e) => {
+      const isBackspace = e.key === 'Backspace'
       const zipcode = (e.currentTarget as HTMLInputElement).value
-      if (zipcode.length > 8) e.preventDefault()
+      if (zipcode.length >= 8 && !isBackspace) e.preventDefault()
     }
 
   const handleZipCodeKeyBlur: FocusEventHandler<HTMLInputElement> = (e) => {
@@ -66,22 +72,29 @@ export const AddressForm = () => {
     if (zipcode.length < 8) setIsZipCodeIncomplete(true)
   }
 
-  const handleUnknownZipcode: ChangeEventHandler<HTMLInputElement> =
+  const handleUnknownZipCodeChange: ChangeEventHandler<HTMLInputElement> =
     (e) => {
       const isChecked = e.currentTarget.checked
-      if (zipcodeRef.current) {
-        zipcodeRef.current.style.display = isChecked ? 'none' : ''
-        setFocus(isChecked ? 'street' : 'zipcode')
-        setValue('zipcode', '')
-
-        if (isZipCodeIncomplete) setIsZipCodeIncomplete(false)
-        if (isSearchingZipCode) setIsSearchingZipCode(false)
-        if (isZipCodeInvalid) setIsZipCodeInvalid(false)
-      }
+      if (isZipCodeIncomplete) setIsZipCodeIncomplete(false)
+      if (isSearchingZipCode) setIsSearchingZipCode(false)
+      if (isZipCodeInvalid) setIsZipCodeInvalid(false)
+      setIsUnknownZipCode(isChecked)
+      setValue('zipcode', '')
     }
 
   const unknownZipcodeRef = useRef<HTMLInputElement>(null)
-  const zipcodeRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (shoppingState.address) {
+      const address = shoppingState.address
+
+      for (const addrressKey in address) {
+        const typedKey = addrressKey as keyof TDeliveryAddress
+        setValue(typedKey, address[typedKey])
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shoppingState.address])
 
   return (
     <AddressFormContainer>
@@ -94,7 +107,7 @@ export const AddressForm = () => {
                 name="unknown-zipcode"
                 id="unknown-zipcode"
                 ref={unknownZipcodeRef}
-                onChange={handleUnknownZipcode}
+                onChange={handleUnknownZipCodeChange}
               />
               <label htmlFor="unknown-zipcode">Não sei meu CEP</label>
             </CheckBoxWrapper>
@@ -103,13 +116,16 @@ export const AddressForm = () => {
           type="number"
           placeholder="CEP"
           {...register('zipcode')}
-          ref={zipcodeRef}
+          pattern="[0-9]{8}"
+          inputMode="numeric"
           onKeyUp={handleZipCodeKeyUp}
           onKeyDown={handleZipCodeKeyDown}
           onBlur={handleZipCodeKeyBlur}
-          onChange={() => {
+          onChange={(e) => {
+            setValue('zipcode', e.currentTarget.value)
             if (isZipCodeInvalid) setIsZipCodeInvalid(false)
           }}
+          style={{ display: isUnknownZipCode ? 'none' : '' }}
         />
 
         {
