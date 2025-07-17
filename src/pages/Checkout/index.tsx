@@ -18,7 +18,7 @@ import {
   useEffect,
 } from 'react'
 import helpers from '../../helpers'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 import type {
   TDeliveryAddress,
@@ -99,12 +99,6 @@ export const Checkout = () => {
     })(formErrors)
 
   useEffect(() => {
-    if (shoppingState.cart.length === 0) {
-      navigate('/')
-    }
-  }, [navigate, shoppingState.cart.length])
-
-  useEffect(() => {
     if (shoppingState.isOrderFinished) {
       shoppingDispatch({
         type: 'FINISH_ORDER',
@@ -118,6 +112,10 @@ export const Checkout = () => {
       })
     }
   }, [shoppingState, shoppingDispatch])
+
+  if (shoppingState.isOrderFinished) {
+    return <Navigate to="/" replace />
+  }
 
   return (
     <CheckoutForm

@@ -10,13 +10,11 @@ import { useContext, useEffect } from 'react'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 import { coffeeVariantsDict } from '../../@static/coffee'
 import helpers from '../../helpers'
-import { useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 export const OrderConfirmation = () => {
   const { shoppingState, shoppingDispatch } = useContext(ShoppingContext)
   const { cart, address, payment } = shoppingState
-
-  const navigate = useNavigate()
 
   const totalPrice = cart.reduce((prev, cur) => {
     return prev + (cur.price * cur.quantity)
@@ -29,11 +27,11 @@ export const OrderConfirmation = () => {
         isOrderFinished: true,
       },
     })
+  }, [shoppingDispatch, shoppingState.cart.length])
 
-    if (shoppingState.cart.length === 0) {
-      navigate('/')
-    }
-  }, [shoppingDispatch, shoppingState.cart.length, navigate])
+  if (shoppingState.cart.length === 0) {
+    return <Navigate to="/" replace />
+  }
 
   return (
     <FlexContainer>
