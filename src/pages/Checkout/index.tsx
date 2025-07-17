@@ -9,6 +9,8 @@ import {
   OrderReviewInfo,
   SubmitOrderButton,
   OrderReviewList,
+  FormErrorsList,
+  FormError,
 } from './styles'
 import { CartItem } from '../../components/CartItem'
 import {
@@ -18,9 +20,12 @@ import {
 import helpers from '../../helpers'
 import { useNavigate } from 'react-router-dom'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
-import type { TShoppingItemVariant } from '../../@types/shopping-item'
+import type {
+  TDeliveryAddress,
+  TShoppingItemVariant,
+} from '../../@types/shopping-item'
 import { AddressForm } from '../../components/AddressForm'
-import { FormProvider, useForm, type SubmitErrorHandler } from 'react-hook-form'
+import { FormProvider, useForm, type FieldErrors } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   checkoutFormValidationSchema,
@@ -35,7 +40,7 @@ export const Checkout = () => {
     resolver: zodResolver(checkoutFormValidationSchema),
   })
 
-  const { handleSubmit } = useFormMethods
+  const { handleSubmit, formState: { errors: formErrors } } = useFormMethods
 
   const navigate = useNavigate()
 
@@ -56,13 +61,6 @@ export const Checkout = () => {
     navigate('/order-confirmation', { replace: true })
   }
 
-  const onInvalidSubmit: SubmitErrorHandler<TCheckoutFormSchema> = (errors) => {
-    console.log('invalid form')
-    console.log(errors)
-    console.log(errors.zipcode?.ref?.value,
-      /^[0-9]{8}$/.test(errors.zipcode?.ref?.value))
-  }
-
   const handleRemoveCartItem = (variant: TShoppingItemVariant) => {
     shoppingDispatch({
       type: 'REMOVE_FROM_CART',
@@ -77,6 +75,28 @@ export const Checkout = () => {
   }, 0)
   const deliveryFee = 4.5
   const totalPrice = productsPrice + deliveryFee
+
+  const addressFields: Record<keyof TDeliveryAddress, true> = {
+    zipcode: true,
+    street: true,
+    number: true,
+    extra: true,
+    district: true,
+    city: true,
+    state: true,
+  }
+
+  const addressFormErrors =
+    ((errors: FieldErrors<TCheckoutFormSchema>) => {
+      return (
+        Object.entries(errors)
+          .map(([key, error]) => {
+            if (!(key in addressFields)) return ''
+            return error.message ?? ''
+          })
+          .filter(item => item)
+      )
+    })(formErrors)
 
   useEffect(() => {
     if (shoppingState.cart.length === 0) {
@@ -101,7 +121,7 @@ export const Checkout = () => {
 
   return (
     <CheckoutForm
-      onSubmit={handleSubmit(onValidSubmit, onInvalidSubmit)}
+      onSubmit={handleSubmit(onValidSubmit)}
       action=""
       autoComplete="off"
     >
@@ -119,6 +139,22 @@ export const Checkout = () => {
             </InputGroupLabel>
 
             <AddressForm />
+
+            {
+              addressFormErrors.length > 0 &&
+                <FormErrorsList>
+                  {
+                    addressFormErrors
+                      .map((message, idx) => {
+                        return (
+                          <li key={btoa(message + idx)}>
+                            <small>{message}</small>
+                          </li>
+                        )
+                      })
+                  }
+                </FormErrorsList>
+            }
           </AddressInputGroup>
 
           <PaymentInputGroup>
@@ -134,6 +170,11 @@ export const Checkout = () => {
             </InputGroupLabel>
 
             <PaymentForm />
+
+            {
+              formErrors.payment &&
+                <FormError>{formErrors.payment.message}</FormError>
+            }
           </PaymentInputGroup>
         </FormProvider>
       </CheckoutFormSection>

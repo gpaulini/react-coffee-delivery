@@ -10,12 +10,13 @@ import {
   AddressFormContainer,
   AddressInput,
   AddressInputContainer,
+  AddressSelect,
   CheckBoxWrapper,
   OptionalInputTag,
   ZipcodeSearchingLabel,
 } from './style'
 import { useFormContext } from 'react-hook-form'
-import type { TCheckoutFormSchema } from '../../schema'
+import { UFs, type TCheckoutFormSchema } from '../../schema'
 import { ShoppingContext } from '../../contexts/ShopppingContext'
 import type { TDeliveryAddress } from '../../@types/shopping-item'
 
@@ -194,11 +195,18 @@ export const AddressForm = () => {
       </AddressInputContainer>
 
       <AddressInputContainer>
-        <AddressInput
-          type="text"
-          placeholder="UF"
+        <AddressSelect
           {...register('state')}
-        />
+        >
+          <option value="">UF</option>
+          {
+            UFs.map(uf => {
+              return (
+                <option key={btoa(uf)} value={uf}>{uf}</option>
+              )
+            })
+          }
+        </AddressSelect>
       </AddressInputContainer>
     </AddressFormContainer>
   )

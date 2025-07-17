@@ -13,6 +13,7 @@ const altConfig = [
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/no-tabs': 'off',
       '@stylistic/multiline-ternary': 'off',
+      '@stylistic/operator-linebreak': 'off',
       'no-debugger': 'off',
     },
   },

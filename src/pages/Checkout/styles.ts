@@ -34,6 +34,26 @@ export const CheckoutFormSection = styled.div`
   }
 `
 
+export const FormErrorsList = styled.ul`
+  padding: 1rem 0 0 1rem;
+  
+  li {
+    list-style: disc;
+    list-style-position: inside;
+    color: ${props => props.theme.colors['yellow-dark']};
+
+    ::marker {
+      color: black;
+    }
+  }
+`
+
+export const FormError = styled.small`
+  display: inline-block;
+  padding: 1rem 0 0 1rem;
+  color: ${props => props.theme.colors['yellow-dark']};
+`
+
 const InputGroup = styled.div`
   padding: 2rem;
   background-color: ${props => props.theme.colors['base-card']};

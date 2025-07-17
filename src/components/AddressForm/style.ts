@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const AddressFormContainer = styled.div`
   display: grid;
@@ -28,10 +28,6 @@ export const AddressFormContainer = styled.div`
 
   > :nth-child(6) {
     grid-column: 4 / 8;
-  }
-
-  > :last-child {
-    grid-column: 1 / -1
   }
 
   @media screen and (max-width: 48rem) {
@@ -114,7 +110,7 @@ export const AddressInputContainer = styled.div`
   position: relative;
 `
 
-export const AddressInput = styled.input`
+const FormFieldStyles = css`
   width: 100%;
   padding: .75rem;
   color: ${props => props.theme.colors['base-label']};
@@ -136,4 +132,11 @@ export const AddressInput = styled.input`
       display: inline-block;
     }
   }
+`
+
+export const AddressInput = styled.input`${FormFieldStyles}`
+
+export const AddressSelect = styled.select`
+  ${FormFieldStyles}
+  width: auto;
 `
