@@ -1,6 +1,6 @@
-import type { TCoffee } from '../@types/shopping-item'
+import type { TShoppingItem } from '../@types/shopping-item'
 
-export const data: TCoffee[] = [
+export const data: TShoppingItem[] = [
   {
     variant: 'arabe',
     labels: ['especial'],
