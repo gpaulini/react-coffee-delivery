@@ -12,6 +12,7 @@ import { ShoppingContext } from '../../contexts/ShopppingContext'
 
 export const Header = () => {
   const { shoppingState, didCartLengthChanged } = useContext(ShoppingContext)
+  const { address } = shoppingState
 
   return (
     <HeaderContainer>
@@ -19,10 +20,13 @@ export const Header = () => {
         <img src={logo} alt="" />
       </NavLink>
       <HeaderActionsContainer>
-        <LocationButton title="Change Location">
-          <MapPin size={22} weight="fill" />
-          <span>Porto Alegre, RS</span>
-        </LocationButton>
+        {
+          address &&
+            <LocationButton title="Change Location">
+              <MapPin size={22} weight="fill" />
+              <span>{address.city}, {address.state}</span>
+            </LocationButton>
+        }
 
         <NavLink to="/checkout">
           <CartButton
